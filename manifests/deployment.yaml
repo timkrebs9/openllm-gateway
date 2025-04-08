@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: llm-api-hub
+  labels:
+    app: llm-api-hub
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: llm-api-hub
+  template:
+    metadata:
+      labels:
+        app: llm-api-hub
+    spec:
+      containers:
+      - name: llm-api-hub
+        image: <your-registry>/llm-api-hub:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8000
+        env:
+        - name: OLLAMA_LLM_ENDPOINT_LLAMA3
+          value: "http://ollama-llama3:11434"
+        - name: OLLAMA_LLM_ENDPOINT_MISTRAL
+          value: "http://ollama-mistral:11434"
+        - name: OLLAMA_LLM_ENDPOINT_GEMMA
+          value: "http://ollama-gemma:11434"
