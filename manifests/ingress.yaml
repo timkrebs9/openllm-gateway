@@ -6,13 +6,13 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-    - host: llm-api.<your-domain>
+    - host: llm-api.10.0.97.62
       http:
         paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            service:
-              name: llm-api-hub
-              port:
-                number: 80
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: llm-api-hub
+                port:
+                  number: 80
