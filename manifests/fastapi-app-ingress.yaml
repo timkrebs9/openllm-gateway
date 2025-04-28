@@ -1,0 +1,32 @@
+# filepath: c:\Development\openllm-gateway\manifests\fastapi-app-ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: fastapi-chat-ingress
+  annotations:
+    # Add annotations for your specific Ingress controller (Nginx, AGIC, etc.)
+    # Example for Nginx:
+    # nginx.ingress.kubernetes.io/rewrite-target: /
+    # nginx.ingress.kubernetes.io/proxy-connect-timeout: "300" # Increase timeout
+    # nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
+    # nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    # Example for AKS Application Gateway Ingress Controller (AGIC):
+    # kubernetes.io/ingress.class: azure/application-gateway
+    # appgw.ingress.kubernetes.io/backend-request-timeout: "300" # Increase timeout
+spec:
+  # ingressClassName: <your-ingress-class> # e.g., nginx or azure-application-gateway
+  tls: # Optional: Configure TLS/HTTPS
+  - hosts:
+    - chat.yourdomain.com # Replace with your actual domain
+    secretName: chat-tls-secret # Replace with your TLS secret name
+  rules:
+  - host: chat.yourdomain.com # Replace with your actual domain
+    http:
+      paths:
+      - path: / # Route root path
+        pathType: Prefix
+        backend:
+          service:
+            name: fastapi-chat-service # Target the FastAPI service
+            port:
+              number: 80 # Target the service port
