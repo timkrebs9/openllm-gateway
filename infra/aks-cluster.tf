@@ -22,6 +22,19 @@ resource "azurerm_resource_group" "default" {
   }
 }
 
+# Add Azure Container Registry resource
+resource "azurerm_container_registry" "default" {
+  name                = "21345642453423acr" # Unique name for the ACR
+  resource_group_name = azurerm_resource_group.default.name
+  location            = azurerm_resource_group.default.location
+  sku                 = "Basic" # Choose between Basic, Standard, and Premium
+  admin_enabled       = false   # Set to true if you need admin user access
+
+  tags = {
+    environment = "Dev" # Match other resource tags or adjust as needed
+  }
+}
+
 resource "azurerm_kubernetes_cluster" "default" {
   name                = "${random_pet.prefix.id}-aks"
   location            = azurerm_resource_group.default.location
@@ -44,6 +57,6 @@ resource "azurerm_kubernetes_cluster" "default" {
   role_based_access_control_enabled = true
 
   tags = {
-    environment = "Demo"
+    environment = "Dev"
   }
 }
