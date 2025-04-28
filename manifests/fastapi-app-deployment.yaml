@@ -1,0 +1,50 @@
+# filepath: c:\Development\openllm-gateway\manifests\fastapi-app-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastapi-chat-app
+  labels:
+    app: fastapi-chat-app
+spec:
+  replicas: 1 # Start with 1, scale as needed
+  selector:
+    matchLabels:
+      app: fastapi-chat-app
+  template:
+    metadata:
+      labels:
+        app: fastapi-chat-app
+    spec:
+      containers:
+      - name: fastapi-chat-app
+        # IMPORTANT: Replace with your actual image registry and name
+        image: <your-acr-name>.azurecr.io/llm-chat-api:latest # Example: myregistry.azurecr.io/llm-chat-api:latest
+        imagePullPolicy: Always # Or IfNotPresent
+        ports:
+        - containerPort: 8000
+          name: http
+        env:
+        - name: OLLAMA_ENDPOINT
+          # Value uses the Kubernetes service DNS name for Ollama
+          value: "http://ollama-deepseek:11434"
+        resources: # Optional: Define resource requests/limits
+          requests:
+            memory: "256Mi"
+            cpu: "250m" # 0.25 CPU core
+          limits:
+            memory: "512Mi"
+            cpu: "500m" # 0.5 CPU core
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fastapi-chat-service
+spec:
+  selector:
+    app: fastapi-chat-app
+  ports:
+    - protocol: TCP
+      port: 80 # Port the service listens on (standard HTTP)
+      targetPort: http # Port on the pod (containerPort name or number 8000)
+  type: ClusterIP # Default, change if exposing directly via LoadBalancer (Ingress is preferred)
