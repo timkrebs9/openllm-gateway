@@ -38,17 +38,18 @@ on:
   workflow_dispatch:
 
 env:
-  ACR_RESOURCE_GROUP: climbing-possum-rg
-  AZURE_CONTAINER_REGISTRY: climbingpossumaksregistry
-  CONTAINER_NAME: image-workflow-1744269854653
-  CLUSTER_NAME: climbing-possum-aks
-  CLUSTER_RESOURCE_GROUP: climbing-possum-rg
+  ACR_RESOURCE_GROUP: factual-wolf-rg
+  AZURE_CONTAINER_REGISTRY: 21345642453423acr
+  CONTAINER_NAME: image-workflow-1745842054041
+  CLUSTER_NAME: factual-wolf-aks
+  CLUSTER_RESOURCE_GROUP: factual-wolf-rg
   CLUSTER_RESOURCE_TYPE: Microsoft.ContainerService/managedClusters
   DEPLOYMENT_MANIFEST_PATH: |
-    ./manifests/deployment.yaml
-    ./manifests/ingress.yaml
-    ./manifests/service.yaml
-  DOCKER_FILE: ./Dockerfile
+    ./manifests/fastapi-app-deployment.yaml
+    ./manifests/fastapi-app-ingress.yaml
+    ./manifests/ollama-deepseek-deployment.yaml
+    ./manifests/ollama-pvc.yaml
+  DOCKER_FILE: ./app/Dockerfile
   BUILD_CONTEXT_PATH: ./
   NAMESPACE: default
   ENABLENAMESPACECREATION: false
