@@ -1,5 +1,8 @@
-
 fastapi
 uvicorn[standard]
 httpx
 python-dotenv
+sqlalchemy[asyncio]
+asyncpg
+passlib[bcrypt]
+email-validator
