@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: auth-service
+  template:
+    metadata:
+      labels:
+        app: auth-service
+    spec:
+      containers:
+      - name: auth-service
+        image: your-dockerhub-username/auth-service:latest
+        ports:
+        - containerPort: 8000
+        env:
+        - name: PGUSER
+          value: "your_db_user"
+        - name: PGPASSWORD
+          value: "your_db_password"
+        - name: PGHOST
+          value: "your_db_host"
+        - name: PGPORT
+          value: "5432"
+        - name: PGDATABASE
+          value: "your_db_name"
