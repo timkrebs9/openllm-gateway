@@ -17,7 +17,7 @@ spec:
         image: ollama/ollama:latest  # offizielles Ollama Image
         ports:
         - containerPort: 11434
-        command: ["ollama", "run", "gemma3:1b"]
+        command: ["ollama", "serve"]
         volumeMounts:
         - mountPath: /root/.ollama
           name: ollama-storage
