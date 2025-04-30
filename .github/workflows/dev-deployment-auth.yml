@@ -40,7 +40,7 @@ on:
 env:
   ACR_RESOURCE_GROUP: talented-osprey-rg
   AZURE_CONTAINER_REGISTRY: 21345642453423acr
-  CONTAINER_NAME: image-workflow-1745994859066
+  CONTAINER_NAME: auth-service
   CLUSTER_NAME: talented-osprey-aks
   CLUSTER_RESOURCE_GROUP: talented-osprey-rg
   CLUSTER_RESOURCE_TYPE: Microsoft.ContainerService/managedClusters
