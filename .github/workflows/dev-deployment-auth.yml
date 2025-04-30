@@ -48,7 +48,7 @@ env:
     ./src/auth-service/manifests/deployment.yaml
     ./src/auth-service/manifests/service.yaml
   DOCKER_FILE: ./src/auth-service/Dockerfile
-  BUILD_CONTEXT_PATH: ./
+  BUILD_CONTEXT_PATH: ./src/auth-service
   NAMESPACE: default
   ENABLENAMESPACECREATION: false
   AUTH_TYPE: SERVICE_PRINCIPAL
