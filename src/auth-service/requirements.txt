@@ -5,3 +5,5 @@ asyncpg
 python-dotenv
 passlib[bcrypt]
 pydantic
+python-multipart
+pydantic[email]
