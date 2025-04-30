@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: chat-service
-        image: your-dockerhub-username/chat-service:latest
+        image: 21345642453423acr.azurecr.io/chat-service:latest
         ports:
         - containerPort: 8000
         env:
