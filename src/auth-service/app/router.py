@@ -8,7 +8,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.future import select
 from passlib.context import CryptContext
 from dotenv import load_dotenv
-from app.auth.models import User
+from app.models import User
 
 load_dotenv()
 logger = logging.getLogger(__name__)
