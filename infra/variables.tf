@@ -40,7 +40,7 @@ variable "useAPIM" {
 
 variable "apimSKU" {
   description = "Azure API Management SKU. Only used if useAPIM is true."
-  type       = string
-  default = "Consumption"
+  type        = string
+  default     = "Consumption"
 }
 
