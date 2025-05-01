@@ -96,7 +96,7 @@ resource "azurerm_container_registry" "openllm-gateway" {
 # ------------------------------------------------------------------------------------------------------
 resource "azurerm_kubernetes_cluster" "openllm-gateway" {
   name                = "${random_pet.prefix.id}aks"
-  location            = "eastus" // Change to a supported location
+  location            = azurerm_resource_group.openllm-gateway.location
   resource_group_name = azurerm_resource_group.openllm-gateway.name
   dns_prefix          = "${random_pet.prefix.id}-k8s"
   kubernetes_version  = "1.27.3" // Use a supported Kubernetes version
