@@ -99,10 +99,10 @@ resource "azurerm_kubernetes_cluster" "openllm-gateway" {
   location            = azurerm_resource_group.openllm-gateway.location
   resource_group_name = azurerm_resource_group.openllm-gateway.name
   dns_prefix          = "${random_pet.prefix.id}-k8s"
-  kubernetes_version  = "1.27.3" // Use a supported Kubernetes version
+  kubernetes_version  = "1.30.1" 
 
   default_node_pool {
-    name            = "openllm" // Ensure it meets the naming requirements
+    name            = "openllm" 
     node_count      = 3
     vm_size         = "Standard_D2_v2"
     os_disk_size_gb = 30
