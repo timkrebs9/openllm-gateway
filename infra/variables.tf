@@ -27,6 +27,11 @@ variable "postgresql_server_admin" {
   default     = "admin"
 }
 
+variable "postgresql_server_password" {
+  description = "PostgreSQL server password"
+  default     = "your-secure-password"
+}
+
 variable "useAPIM" {
   description = "Flag to use Azure API Management to mediate the calls between the Web frontend and the backend API."
   type        = bool
@@ -38,3 +43,4 @@ variable "apimSKU" {
   type       = string
   default = "Consumption"
 }
+
