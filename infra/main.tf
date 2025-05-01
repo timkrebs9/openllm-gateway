@@ -45,31 +45,31 @@ resource "azurerm_resource_group" "openllm-gateway" {
 # Generate a resource token
 # ------------------------------------------------------------------------------------------------------
 locals {
-  sha                          = base64encode(sha256("${azurerm_resource_group.openllm-gateway.tags["environment"]}${azurerm_resource_group.openllm-gateway.location}${data.azurerm_client_config.current.subscription_id}"))
-  resource_token               = substr(replace(lower(local.sha), "[^A-Za-z0-9_]", ""), 0, 13)
+  sha            = base64encode(sha256("${azurerm_resource_group.openllm-gateway.tags["environment"]}${azurerm_resource_group.openllm-gateway.location}${data.azurerm_client_config.current.subscription_id}"))
+  resource_token = substr(replace(lower(local.sha), "[^A-Za-z0-9_]", ""), 0, 13)
 }
 
 # ------------------------------------------------------------------------------------------------------
 # Deploy postgresql flexible server
 # ------------------------------------------------------------------------------------------------------
 resource "azurerm_postgresql_flexible_server" "openllm-gateway" {
-  administrator_login           = var.postgresql_server_admin
-  administrator_password        = var.postgresql_server_password
-  auto_grow_enabled             = false
-  backup_retention_days         = 7
+  administrator_login    = var.postgresql_server_admin
+  administrator_password = var.postgresql_server_password
+  auto_grow_enabled      = false
+  backup_retention_days  = 7
   #delegated_subnet_id           = "your-delegated-subnet-id" // Replace with a valid subnet ID
-  geo_redundant_backup_enabled  = false
-  location                      = azurerm_resource_group.openllm-gateway.location
-  name                          = "${random_pet.prefix.id}-${var.postgresql_server_name}"
+  geo_redundant_backup_enabled = false
+  location                     = azurerm_resource_group.openllm-gateway.location
+  name                         = "${random_pet.prefix.id}-${var.postgresql_server_name}"
   #private_dns_zone_id           = "your-private-dns-zone-id" // Replace with a valid DNS zone ID
-  replication_role              = "None" // Set to a valid value
-  resource_group_name           = azurerm_resource_group.openllm-gateway.name
-  sku_name                      = "B_Standard_B2s"
-  storage_mb                    = 131072
-  storage_tier                  = "P10"
-  tags                          = {}
-  version                       = "16"
-  zone                          = "1"
+  replication_role    = "None" // Set to a valid value
+  resource_group_name = azurerm_resource_group.openllm-gateway.name
+  sku_name            = "B_Standard_B2s"
+  storage_mb          = 131072
+  storage_tier        = "P10"
+  tags                = {}
+  version             = "16"
+  zone                = "1"
   authentication {
     active_directory_auth_enabled = false
     password_auth_enabled         = true
@@ -81,7 +81,7 @@ resource "azurerm_postgresql_flexible_server" "openllm-gateway" {
 # Deploy Azure Container Registry
 # ------------------------------------------------------------------------------------------------------
 resource "azurerm_container_registry" "openllm-gateway" {
-  name                = "${random_pet.prefix.id}acr" // Remove the hyphen to make it alphanumeric
+  name                = "${replace(random_pet.prefix.id, "-", "")}acr"
   resource_group_name = azurerm_resource_group.openllm-gateway.name
   location            = azurerm_resource_group.openllm-gateway.location
   sku                 = "Basic"
@@ -95,7 +95,7 @@ resource "azurerm_container_registry" "openllm-gateway" {
 # Deploy AKS cluster
 # ------------------------------------------------------------------------------------------------------
 resource "azurerm_kubernetes_cluster" "openllm-gateway" {
-  name                = "${random_pet.prefix.id}aks" // Remove the hyphen to make it alphanumeric
+  name                = "${random_pet.prefix.id}aks"
   location            = "eastus" // Change to a supported location
   resource_group_name = azurerm_resource_group.openllm-gateway.name
   dns_prefix          = "${random_pet.prefix.id}-k8s"
@@ -138,8 +138,8 @@ module "applicationinsights" {
 # ------------------------------------------------------------------------------------------------------
 module "loganalytics" {
   source         = "./modules/loganalytics"
-  location         = azurerm_resource_group.openllm-gateway.location
-  rg_name          = azurerm_resource_group.openllm-gateway.name
-  tags             = azurerm_resource_group.openllm-gateway.tags
+  location       = azurerm_resource_group.openllm-gateway.location
+  rg_name        = azurerm_resource_group.openllm-gateway.name
+  tags           = azurerm_resource_group.openllm-gateway.tags
   resource_token = local.resource_token
 }
