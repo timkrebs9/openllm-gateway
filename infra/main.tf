@@ -11,7 +11,6 @@ terraform {
   required_version = ">= 0.14"
 }
 
-
 provider "azurerm" {
   features {}
   #skip_provider_registration = true
@@ -21,6 +20,9 @@ provider "azurerm" {
   client_id       = var.appId
   client_secret   = var.password
 }
+
+# Declare the missing data source
+data "azurerm_client_config" "current" {}
 
 # ------------------------------------------------------------------------------------------------------
 # Generate a random prefix for resource names
@@ -52,16 +54,15 @@ locals {
 # ------------------------------------------------------------------------------------------------------
 resource "azurerm_postgresql_flexible_server" "openllm-gateway" {
   administrator_login           = var.postgresql_server_admin
-  administrator_password        = "" 
+  administrator_password        = var.postgresql_server_password
   auto_grow_enabled             = false
   backup_retention_days         = 7
-  delegated_subnet_id           = ""
+  #delegated_subnet_id           = "your-delegated-subnet-id" // Replace with a valid subnet ID
   geo_redundant_backup_enabled  = false
   location                      = azurerm_resource_group.openllm-gateway.location
   name                          = "${random_pet.prefix.id}-${var.postgresql_server_name}"
-  private_dns_zone_id           = ""
-  public_network_access_enabled = true
-  replication_role              = ""
+  #private_dns_zone_id           = "your-private-dns-zone-id" // Replace with a valid DNS zone ID
+  replication_role              = "None" // Set to a valid value
   resource_group_name           = azurerm_resource_group.openllm-gateway.name
   sku_name                      = "B_Standard_B2s"
   storage_mb                    = 131072
@@ -72,7 +73,7 @@ resource "azurerm_postgresql_flexible_server" "openllm-gateway" {
   authentication {
     active_directory_auth_enabled = false
     password_auth_enabled         = true
-    tenant_id                     = ""
+    tenant_id                     = var.tenant_id // Replace with a valid UUID
   }
 }
 
@@ -101,7 +102,7 @@ resource "azurerm_kubernetes_cluster" "openllm-gateway" {
   kubernetes_version  = "1.30.1"
 
   default_node_pool {
-    name            = "openllm-gateway"
+    name            = "openllm" // Ensure it meets the naming requirements
     node_count      = 3
     vm_size         = "Standard_D2_v2"
     os_disk_size_gb = 30
@@ -128,7 +129,7 @@ module "applicationinsights" {
   rg_name          = azurerm_resource_group.openllm-gateway.name
   environment_name = "${random_pet.prefix.id}-ai"
   workspace_id     = module.loganalytics.LOGANALYTICS_WORKSPACE_ID
-  tags             = azurerm_resource_group.rg.tags
+  tags             = azurerm_resource_group.openllm-gateway.tags
   resource_token   = local.resource_token
 }
 
@@ -139,6 +140,6 @@ module "loganalytics" {
   source         = "./modules/loganalytics"
   location         = azurerm_resource_group.openllm-gateway.location
   rg_name          = azurerm_resource_group.openllm-gateway.name
-  tags           = azurerm_resource_group.rg.tags
+  tags             = azurerm_resource_group.openllm-gateway.tags
   resource_token = local.resource_token
 }
