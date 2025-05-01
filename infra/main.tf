@@ -81,13 +81,13 @@ resource "azurerm_postgresql_flexible_server" "openllm-gateway" {
 # Deploy Azure Container Registry
 # ------------------------------------------------------------------------------------------------------
 resource "azurerm_container_registry" "openllm-gateway" {
-  name                = "${random_pet.prefix.id}-acr" 
+  name                = "${random_pet.prefix.id}acr" // Remove the hyphen to make it alphanumeric
   resource_group_name = azurerm_resource_group.openllm-gateway.name
   location            = azurerm_resource_group.openllm-gateway.location
-  sku                 = "Basic" 
-  admin_enabled       = false   
+  sku                 = "Basic"
+  admin_enabled       = false
   tags = {
-    environment = "Dev"  
+    environment = "Dev"
   }
 }
 
@@ -95,11 +95,11 @@ resource "azurerm_container_registry" "openllm-gateway" {
 # Deploy AKS cluster
 # ------------------------------------------------------------------------------------------------------
 resource "azurerm_kubernetes_cluster" "openllm-gateway" {
-  name                = "${random_pet.prefix.id}-aks"
-  location            = azurerm_resource_group.openllm-gateway.location
+  name                = "${random_pet.prefix.id}aks" // Remove the hyphen to make it alphanumeric
+  location            = "eastus" // Change to a supported location
   resource_group_name = azurerm_resource_group.openllm-gateway.name
   dns_prefix          = "${random_pet.prefix.id}-k8s"
-  kubernetes_version  = "1.30.1"
+  kubernetes_version  = "1.27.3" // Use a supported Kubernetes version
 
   default_node_pool {
     name            = "openllm" // Ensure it meets the naming requirements
