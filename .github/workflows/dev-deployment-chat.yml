@@ -49,7 +49,7 @@ env:
     ./src/chat-service/manifests/service.yaml
   DOCKER_FILE: ./src/chat-service/Dockerfile
   BUILD_CONTEXT_PATH: ./src/chat-service
-  NAMESPACE: default
+  NAMESPACE: namespace-workflow-1746370363428
   ENABLENAMESPACECREATION: false
   AUTH_TYPE: SERVICE_PRINCIPAL
 
