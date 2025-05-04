@@ -1,0 +1,58 @@
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: frontend-ingress
+  namespace: default
+  uid: 67ce4d6c-1273-4b8d-bc11-d6ad7fa26f8e
+  resourceVersion: '10150'
+  generation: 1
+  creationTimestamp: '2025-05-04T15:08:09Z'
+  annotations:
+    kubernetes.azure.com/tls-cert-keyvault-uri: https://apt-cowbird-kv.vault.azure.net/certificates/azureopengpt-tls
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  managedFields:
+    - manager: Mozilla
+      operation: Update
+      apiVersion: networking.k8s.io/v1
+      time: '2025-05-04T15:08:09Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            .: {}
+            f:kubernetes.azure.com/tls-cert-keyvault-uri: {}
+        f:spec:
+          f:ingressClassName: {}
+          f:rules: {}
+          f:tls: {}
+    - manager: nginx-ingress-controller
+      operation: Update
+      apiVersion: networking.k8s.io/v1
+      time: '2025-05-04T15:08:24Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:status:
+          f:loadBalancer:
+            f:ingress: {}
+      subresource: status
+spec:
+  ingressClassName: webapprouting.kubernetes.azure.com
+  tls:
+    - hosts:
+        - chat.azureopengpt.com
+      secretName: keyvault-frontend-ingress
+  rules:
+    - host: chat.azureopengpt.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend-service
+                port:
+                  number: 80
+status:
+  loadBalancer:
+    ingress:
+      - ip: 172.215.235.180
