@@ -1,22 +1,26 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: auth-chat-ingress
+  name: auth-ingress
+  namespace: default
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    kubernetes.io/ingress.class: nginx
 spec:
   rules:
-  - host: chat.azuregpt.com  # <-- Hier deine echte Domain eintragen (oder Minikube-IP für Tests)
+  - host: auth.azureopengpt.com
     http:
       paths:
-      - path: /auth(/|$)(.*)
+      - path: /
         pathType: Prefix
         backend:
           service:
             name: auth-service
             port:
               number: 80
-      - path: /chat(/|$)(.*)
+  - host: chat.azureopengpt.com
+    http:
+      paths:
+      - path: /
         pathType: Prefix
         backend:
           service:
