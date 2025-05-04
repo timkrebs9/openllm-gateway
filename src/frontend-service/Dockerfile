@@ -8,6 +8,8 @@ RUN apt-get install -y --no-install-recommends gcc libpq-dev
 RUN rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt ./
+COPY templates/ /app/templates/
+COPY static/ /app/static/
 
 RUN pip install --no-cache-dir -r requirements.txt
 
