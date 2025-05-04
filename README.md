@@ -1,6 +1,11 @@
-Projectstruktur: 
+[![dev-deployment-frontend](https://github.com/timkrebs9/openllm-gateway/actions/workflows/dev-deployment-frontend.yml/badge.svg)](https://github.com/timkrebs9/openllm-gateway/actions/workflows/dev-deployment-frontend.yml)
 
-openll-gateway: 
+[![dev-deployment-chat](https://github.com/timkrebs9/openllm-gateway/actions/workflows/dev-deployment-chat.yml/badge.svg)](https://github.com/timkrebs9/openllm-gateway/actions/workflows/dev-deployment-chat.yml)
+
+[![dev-deployment-auth](https://github.com/timkrebs9/openllm-gateway/actions/workflows/dev-deployment-auth.yml/badge.svg)](https://github.com/timkrebs9/openllm-gateway/actions/workflows/dev-deployment-auth.yml)
+
+Projectstruktur:
+openll-gateway:
 ├── infra/
 └──src/
     ├── auth-service/
