@@ -46,6 +46,7 @@ env:
   CLUSTER_RESOURCE_TYPE: Microsoft.ContainerService/managedClusters
   DEPLOYMENT_MANIFEST_PATH: |
     ./src/frontend-service/manifests/frontend-deployment.yaml
+    ./src/frontend-service/manifests/service.yaml
   DOCKER_FILE: ./src/frontend-service/Dockerfile
   BUILD_CONTEXT_PATH: ./src/frontend-service
   NAMESPACE: default
