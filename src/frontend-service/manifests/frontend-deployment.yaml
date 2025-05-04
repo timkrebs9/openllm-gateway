@@ -13,7 +13,7 @@ spec:
         app: frontend-service
     spec:
       containers:
-      - name: frontend
+      - name: frontend-service
         image: aptcowbirdacr.azurecr.io/frontend-service:latest
         ports:
         - containerPort: 8000
