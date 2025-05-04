@@ -38,11 +38,11 @@ on:
   workflow_dispatch:
 
 env:
-  ACR_RESOURCE_GROUP: talented-osprey-rg
-  AZURE_CONTAINER_REGISTRY: 21345642453423acr
+  ACR_RESOURCE_GROUP: apt-cowbird-rg
+  AZURE_CONTAINER_REGISTRY: aptcowbirdacr
   CONTAINER_NAME: chat-service
-  CLUSTER_NAME: talented-osprey-aks
-  CLUSTER_RESOURCE_GROUP: talented-osprey-rg
+  CLUSTER_NAME: apt-cowbird-aks
+  CLUSTER_RESOURCE_GROUP: apt-cowbird-rg
   CLUSTER_RESOURCE_TYPE: Microsoft.ContainerService/managedClusters
   DEPLOYMENT_MANIFEST_PATH: |
     ./src/chat-service/manifests/deployment.yaml
