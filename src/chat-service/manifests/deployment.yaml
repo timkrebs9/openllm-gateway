@@ -14,11 +14,11 @@ spec:
     spec:
       containers:
       - name: chat-service
-        image: 21345642453423acr.azurecr.io/chat-service:latest
+        image: aptcowbirdacr.azurecr.io/chat-service:latest
         ports:
         - containerPort: 8000
         env:
         - name: AUTH_SERVICE_URL
-          value: "http://auth-service/auth/users/me"
+          value: "https://auth.azureopengpt.com/auth/users/me"
         - name: OLLAMA_SERVICE_URL
           value: "http://ollama-service:11434/api/generate"
