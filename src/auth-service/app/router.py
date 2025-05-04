@@ -14,6 +14,11 @@ load_dotenv()
 logger = logging.getLogger(__name__)
 router = APIRouter()
 
+
+class LoginRequest(BaseModel):
+    email: str
+    password: str
+
 DATABASE_URL = f"postgresql+asyncpg://{os.getenv('PGUSER')}:{os.getenv('PGPASSWORD')}@{os.getenv('PGHOST')}:{os.getenv('PGPORT')}/{os.getenv('PGDATABASE')}"
 
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
@@ -43,6 +48,22 @@ def verify_password(plain_password, hashed_password):
 
 def get_password_hash(password):
     return pwd_context.hash(password)
+
+
+@router.post("/signin", response_model=dict)
+async def signin(data: LoginRequest, db: AsyncSession = Depends(get_db)):
+    logger.info(f"Signin request for user: {data.email}")
+    stmt = select(User).where(User.email == data.email)
+    result = await db.execute(stmt)
+    user = result.scalar_one_or_none()
+
+    if not user or not verify_password(data.password, user.hashed_password):
+        logger.warning(f"Signin failed for user: {data.email}")
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect email or password")
+
+    logger.info(f"Signin successful for user: {data.email}")
+    return {"access_token": user.username, "token_type": "bearer"}
+
 
 @router.post("/token", response_model=dict)
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db=Depends(get_db)):
@@ -78,15 +99,15 @@ async def signup(user: UserSignup, db: AsyncSession = Depends(get_db)):
     logger.info(f"User created successfully: {user.username}")
     return {"message": "User created successfully"}
 
-@router.post("/signin", response_model=dict)
-async def signin(form_data: OAuth2PasswordRequestForm = Depends(), db: AsyncSession = Depends(get_db)):
-    logger.info(f"Signin request for user: {form_data.username}")
-    user = await db.get(User, form_data.username)
-    if not user or not verify_password(form_data.password, user.hashed_password):
-        logger.warning(f"Signin failed for user: {form_data.username}")
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect username or password")
-    logger.info(f"Signin successful for user: {form_data.username}")
-    return {"access_token": user.username, "token_type": "bearer"}
+#@router.post("/signin", response_model=dict)
+#async def signin(form_data: OAuth2PasswordRequestForm = Depends(), db: AsyncSession = Depends(get_db)):
+#    logger.info(f"Signin request for user: {form_data.username}")
+#    user = await db.get(User, form_data.username)
+#    if not user or not verify_password(form_data.password, user.hashed_password):
+#        logger.warning(f"Signin failed for user: {form_data.username}")
+#        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect username or password")
+#    logger.info(f"Signin successful for user: {form_data.username}")
+#    return {"access_token": user.username, "token_type": "bearer"}
 
 @router.get("/users/me")
 async def read_users_me(current_user: User = Depends(get_current_user)):
