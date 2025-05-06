@@ -6,7 +6,26 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Welcome to OpenLLM Gateway</h1>
-    <p>This is the frontend service.</p>
+    <header>
+        <h1>OpenLLM Gateway</h1>
+        <nav>
+            {% if user %}
+                <span>Welcome, {{ user.email }}</span>
+                <a href="{{ url_for('logout') }}">Logout</a>
+            {% else %}
+                <a href="{{ url_for('login') }}">Login</a>
+                <a href="{{ url_for('signup') }}">Sign Up</a>
+            {% endif %}
+        </nav>
+    </header>
+    <main>
+        <h2>Landing Page</h2>
+        <p>This is the frontend service for OpenLLM Gateway.</p>
+        {% if user %}
+            <p>You are logged in.</p>
+        {% else %}
+            <p>Please log in or sign up to continue.</p>
+        {% endif %}
+    </main>
 </body>
 </html>
